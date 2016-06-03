@@ -7,8 +7,8 @@ public:
 	FastBilateral(int x, int y, int eps);
 	~FastBilateral();
 	int x, y, eps;
-	arma::Cube<int> W_I;
-	arma::Cube<int> W;
+	arma::cube W_I;
+	arma::cube W;
 
 	arma::mat filter(const arma::Mat<int> & image, float sigma_r, float sigma_s);
 

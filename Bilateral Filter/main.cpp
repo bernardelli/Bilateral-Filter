@@ -13,9 +13,12 @@ static void Arma_mat_to_cv_mat(const arma::Mat<T>& arma_mat_in, cv::Mat_<T>& cv_
 
 int main() {
 
+
 	cv::Mat image;
-	image = cv::imread("lena30.jpg", CV_LOAD_IMAGE_GRAYSCALE);   // Read the file
+	image = cv::imread("len_std.jpg", CV_LOAD_IMAGE_GRAYSCALE);   // Read the file
 	
+	cv::namedWindow("Original image", cv::WINDOW_AUTOSIZE);// Create a window for display.
+	cv::imshow("Original image", image);
 	
 	if (!image.data)                              // Check for invalid input
 	{
@@ -32,8 +35,8 @@ int main() {
 
 	FastBilateral fb = FastBilateral(image_arma.n_rows, image_arma.n_cols, 256);
 
-	float sigma_r = 2;
-	float sigma_s = 2;
+	float sigma_r = 3;
+	float sigma_s = 13;
 	arma::mat image_bf = fb.filter(image_arma, sigma_r, sigma_s);
 
 
@@ -56,9 +59,9 @@ int main() {
 
 	cv::Mat_<float> image_filtered;
 	Arma_mat_to_cv_mat<float>(arma::conv_to<arma::Mat<float>>::from(image_bf), image_filtered); 
-	cv::namedWindow("Display window", cv::WINDOW_AUTOSIZE);// Create a window for display.
-	cv::imshow("Display window", image_filtered);                   // Show our image inside it.
-
+	cv::namedWindow("Filtered image", cv::WINDOW_AUTOSIZE);// Create a window for display.
+	cv::imshow("Filtered image", image_filtered);                   // Show our image inside it.
+	cv::imwrite("../../images/Result.jpg", image_filtered); //Where is it??
 	cv::waitKey(0);
 	return 0;
 }
