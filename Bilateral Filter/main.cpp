@@ -2,6 +2,7 @@
 #include <iostream>
 #include <opencv2/core/core.hpp>
 #include <opencv2/highgui/highgui.hpp>
+#include "FastBilateral.h"
 #define WIN32
 
 template<typename T>
@@ -28,12 +29,16 @@ int main() {
 	arma::Mat<int> image_arma;///(image.cols, image.rows);
 	Cv_mat_to_arma_mat<int>(image, image_arma);
 
-	//image_arma.print();
 
-	//do convolution with arma
-	
-	arma::mat image_arma_float = arma::conv_to<arma::mat>::from(image_arma);
+	FastBilateral fb = FastBilateral(image_arma.n_rows, image_arma.n_cols, 256);
 
+	float sigma_r = 2;
+	float sigma_s = 2;
+	arma::mat image_bf = fb.filter(image_arma, sigma_r, sigma_s);
+
+
+
+/*
 	image_arma /= image_arma.max();
 
 	arma::mat kernel;
@@ -45,9 +50,12 @@ int main() {
 	image_conv_arma_ /= image_conv_arma_.max();
 	arma::Mat<float> image_conv_arma = arma::conv_to<arma::Mat<float>>::from(image_conv_arma_);
 	cv::Mat_<float> image_filtered;
-	Arma_mat_to_cv_mat<float>(image_conv_arma, image_filtered);
+	Arma_mat_to_cv_mat<float>(image_conv_arma, image_filtered);*/
 	//show image with opencv
 
+
+	cv::Mat_<float> image_filtered;
+	Arma_mat_to_cv_mat<float>(arma::conv_to<arma::Mat<float>>::from(image_bf), image_filtered); 
 	cv::namedWindow("Display window", cv::WINDOW_AUTOSIZE);// Create a window for display.
 	cv::imshow("Display window", image_filtered);                   // Show our image inside it.
 
