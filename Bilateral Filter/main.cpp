@@ -35,8 +35,8 @@ int main() {
 
 	FastBilateral fb = FastBilateral(image_arma.n_rows, image_arma.n_cols, 256);
 
-	float sigma_r = 3;
-	float sigma_s = 13;
+	float sigma_r = 10;
+	float sigma_s = 33;
 	arma::mat image_bf = fb.filter(image_arma, sigma_r, sigma_s);
 
 
@@ -60,8 +60,9 @@ int main() {
 	cv::Mat_<float> image_filtered;
 	Arma_mat_to_cv_mat<float>(arma::conv_to<arma::Mat<float>>::from(image_bf), image_filtered); 
 	cv::namedWindow("Filtered image", cv::WINDOW_AUTOSIZE);// Create a window for display.
-	cv::imshow("Filtered image", image_filtered);                   // Show our image inside it.
-	cv::imwrite("../../images/Result.jpg", image_filtered); //Where is it??
+	cv::imshow("Filtered image", image_filtered);      
+	//image_filtered.convertTo(image_filtered, CV_8UC1, 255.0); 
+	cv::imwrite("Result.jpg", image_filtered*256);
 	cv::waitKey(0);
 	return 0;
 }
